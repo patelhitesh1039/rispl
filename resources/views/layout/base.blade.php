@@ -167,7 +167,7 @@ License: You must have a valid license purchased only from themeforest(the above
             }
         }
 
-        .loader {
+        /* .loader {
 
             position: fixed;
             top: 0;
@@ -178,7 +178,7 @@ License: You must have a valid license purchased only from themeforest(the above
             background: rgba(48, 48, 48, 0.75) url(/{{ $logo->value }}) no-repeat center center;
             z-index: 10000;
             background-size: 100px;
-        }
+        } */
 
         .changeorder {
             border: 1px solid #ddd;
@@ -308,6 +308,12 @@ License: You must have a valid license purchased only from themeforest(the above
         }
     </style>
     <script></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     @yield('head')
 
@@ -320,6 +326,9 @@ License: You must have a valid license purchased only from themeforest(the above
     $(window).on('load', function() {
         $('#loading').hide();
     })
+    document.addEventListener("DOMContentLoaded", function() {
+    lucide.createIcons();
+  });
 </script>
 
 </html>

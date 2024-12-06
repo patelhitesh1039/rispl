@@ -11,14 +11,8 @@
 
                 <div class="my-auto">
                     @php
-                        $logo = DB::table('systemflag')
-                            ->where('name', 'AdminLogo')
-                            ->select('value')
-                            ->first();
-                        $appName = DB::table('systemflag')
-                            ->where('name', 'AppName')
-                            ->select('value')
-                            ->first();
+                        $logo = DB::table('systemflag')->where('name', 'AdminLogo')->select('value')->first();
+                        $appName = DB::table('systemflag')->where('name', 'AppName')->select('value')->first();
                     @endphp
                     <img alt="AstroGuru image" class="-intro-x w-1/2 -mt-16" src="/{{ $logo->value }}"
                         style="height: 200px;width: 200px;border-radius:50%">
@@ -93,59 +87,61 @@
 
 @section('script')
     <script type="module">
-var spinner = $('.loader');
-jQuery.ajaxSetup({
-    headers:{
-        'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-    }
-})
-
-        jQuery(".btn-submit").click(function(e){
-
-    e.preventDefault();
-
-    var email = $("#email").val();
-    var password = $("#password").val();
-
-    jQuery.ajax({
-
-       type:'POST',
-       url:"{{ route('loginApi') }}",
-       data:{email:email, password:password},
-       success:function(data){
-            if(jQuery.isEmptyObject(data.error)){
-                location.href = data.first;
-            }else{
-                printErrorMsg(data.error);
+        var spinner = $('.loader');
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-       }
-    });
+        })
 
-});
+        jQuery(".btn-submit").click(function(e) {
+
+            e.preventDefault();
+
+            var email = $("#email").val();
+            var password = $("#password").val();
+
+            jQuery.ajax({
+
+                type: 'POST',
+                url: "{{ route('login.submit') }}",
+                data: {
+                    email: email,
+                    password: password
+                },
+                success: function(data) {
+                    if (jQuery.isEmptyObject(data.error)) {
+                        location.href = data.first;
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
+
+        });
 
 
-function printErrorMsg (msg) {
-    jQuery(".print-error-msg").find("ul").html('');
-    jQuery(".print-email-error-msg").find("ul").html('');
-    jQuery(".print-password-error-msg").find("ul").html('');
-    jQuery.each( msg, function( key, value ) {
-        if(key == 'email') {
-            jQuery(".print-email-error-msg").css('display','block');
-            jQuery(".print-email-error-msg").find("ul").append('<li>'+value+'</li>');
+        function printErrorMsg(msg) {
+            jQuery(".print-error-msg").find("ul").html('');
+            jQuery(".print-email-error-msg").find("ul").html('');
+            jQuery(".print-password-error-msg").find("ul").html('');
+            jQuery.each(msg, function(key, value) {
+                if (key == 'email') {
+                    jQuery(".print-email-error-msg").css('display', 'block');
+                    jQuery(".print-email-error-msg").find("ul").append('<li>' + value + '</li>');
+                }
+                if (key == 'password') {
+                    jQuery(".print-password-error-msg").css('display', 'block');
+                    jQuery(".print-password-error-msg").find("ul").append('<li>' + value + '</li>');
+                }
+                if (!key) {
+                    jQuery(".print-error-msg").css('display', 'block');
+                    jQuery(".print-error-msg").find("ul").append('<li>' + value + '</li>');
+                }
+            });
         }
-        if(key == 'password') {
-            jQuery(".print-password-error-msg").css('display','block');
-            jQuery(".print-password-error-msg").find("ul").append('<li>'+value+'</li>');
-        }
-        if(!key) {
-              jQuery(".print-error-msg").css('display','block');
-              jQuery(".print-error-msg").find("ul").append('<li>'+value+'</li>');
-        }
-    });
-}
-
     </script>
-      <script>
+    <script>
         $(window).on('load', function() {
             // alert('asd');
             $('.loader').hide();
